@@ -1,0 +1,123 @@
+import java.util.Scanner;
+
+public class Online_Examination {
+	private String user;
+	private String pass;
+	private boolean isLoggIn;
+	private int time;
+	private int count;
+	private int[] userAns;
+	private int[] correctAns;
+	
+	public Online_Examination(String user,String pass)
+	{
+		this.user=user;
+		this.pass=pass;
+		System.out.println("You are registered successfuly!");
+		this.isLoggIn=false;
+		this.time=10;
+		this.count=10;
+		this.userAns=new int[count];
+		this.correctAns=new int[count];
+		
+		for(int i=0;i<count;i++)
+		{
+			correctAns[i]=(int)Math.round(Math.random());
+		}
+		
+	}
+	public void login()
+	{
+		System.out.println("Login to give exam!");
+		Scanner scanner=new Scanner(System.in);
+		System.out.println("UserName: ");
+		String inputUserName=scanner.nextLine();
+		System.out.println("Password: ");
+		String inputPassword=scanner.nextLine();
+		if(inputUserName.equals(user) && inputPassword.equals(pass))
+		{
+			isLoggIn=true;
+			System.out.println("Login Successful \nBest Luck for Exam!");
+		}
+		else
+		{
+			System.out.println("Login failed \nPlease try again");
+		}
+	}
+	public void logout()
+	{
+		isLoggIn=false;
+		System.out.println("Logout Successful");
+		return;
+	}
+	public void startTheExam()
+	{
+		if(!isLoggIn)
+		{
+			System.out.println("Please login first");
+			return;
+		}
+		Scanner scanner=new Scanner(System.in);
+		System.out.println("You have"+time+ "minutes to finish the exam");
+	    for(int i=0;i<count;i++)
+	    {
+	    	System.out.println("Question"+(i+1)+":");
+	    	System.out.println("1. option 1");
+	    	System.out.println("2.option 2");
+	    	System.out.println("Your answer(1 or 2): ");
+	    	int answer=scanner.nextInt();
+	    	userAns[i]=answer;
+	    	
+	    }
+	    System.out.println("Would you like to submit? \s1:Yes \s2:No");
+	    int n=scanner.nextInt();
+	    if(n==1)
+	    {
+	    	submitTheExam();
+	    }
+	    else
+	    {
+	    	try
+	    	{
+	    		Thread.sleep(time * 10 * 1000);
+	    		
+	    	}
+	    	catch(InterruptedException e)
+	    	{
+	    		e.printStackTrace();
+	    		submitTheExam();
+	    	}
+	    }
+	}
+	public void submitTheExam()
+	{
+		if(!isLoggIn)
+		{
+			System.out.println("Please login first!");
+			return;
+		}
+		int score=0;
+		for(int i=0;i<count;i++)
+		{
+			if(userAns[i]==correctAns[i])
+			{
+				score++;
+			}
+		}
+		System.out.println("Your score is"+score +"out of"+count+".");
+		System.out.println("Best of luck for the future!");
+		logout();
+	}
+	public static void main(String args[])
+	{
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter your username and password");
+		String usName=sc.nextLine();
+		String paWord=sc.nextLine();
+		
+		Online_Examination examSystem=new Online_Examination(usName,paWord);
+		examSystem.login();
+		examSystem.startTheExam();
+	}
+}
+
